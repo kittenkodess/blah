@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOSE - Drug Outreach & Support Education</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Design System Variables */
+        :root {
+            --background: hsl(0, 0%, 100%);
+            --foreground: hsl(216, 15%, 15%);
+            --card: hsl(0, 0%, 100%);
+            --card-foreground: hsl(216, 15%, 15%);
+            --primary: hsl(217, 91%, 60%);
+            --primary-foreground: hsl(0, 0%, 100%);
+            --secondary: hsl(210, 40%, 98%);
+            --secondary-foreground: hsl(216, 15%, 15%);
+            --muted: hsl(210, 40%, 96%);
+            --muted-foreground: hsl(215, 16%, 47%);
+            --destructive: hsl(0, 84%, 60%);
+            --destructive-foreground: hsl(0, 0%, 98%);
+            --border: hsl(220, 13%, 91%);
+            
+            /* Custom gradients for pharmaceutical aesthetic */
+            --gradient-dose: linear-gradient(135deg, hsl(200, 100%, 85%), hsl(210, 100%, 75%), hsl(220, 100%, 65%));
+            --gradient-subtle: linear-gradient(180deg, hsl(210, 40%, 99%), hsl(210, 40%, 96%));
+            --gradient-hero: linear-gradient(135deg, hsl(200, 100%, 90%), hsl(210, 100%, 80%), hsl(220, 100%, 70%));
+            
+            /* Shadows for depth */
+            --shadow-soft: 0 2px 8px 0 hsla(200, 100%, 85%, 0.15);
+            --shadow-medium: 0 4px 16px 0 hsla(210, 100%, 75%, 0.2);
+            --shadow-strong: 0 8px 32px 0 hsla(220, 100%, 65%, 0.25);
+            
+            /* Transitions */
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Utility classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .bg-gradient-dose {
+            background: var(--gradient-dose);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .bg-gradient-subtle {
+            background: var(--gradient-subtle);
+        }
+
+        .bg-gradient-hero {
+            background: var(--gradient-hero);
+        }
+
+        .shadow-soft {
+            box-shadow: var(--shadow-soft);
+        }
+
+        .shadow-medium {
+            box-shadow: var(--shadow-medium);
+        }
+
+        .shadow-strong {
+            box-shadow: var(--shadow-strong);
+        }
+
+        /* Header styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background-color: hsla(0, 0%, 100%, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.875rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: none;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--foreground);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Button styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+        }
+
+        .btn-primary:hover {
+            background-color: hsl(217, 91%, 55%);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--border);
+            background-color: transparent;
+            color: var(--foreground);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--secondary);
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+        }
+
+        .btn-destructive {
+            background-color: var(--destructive);
+            color: var(--destructive-foreground);
+        }
+
+        .btn-destructive:hover {
+            background-color: hsl(0, 84%, 55%);
+        }
+
+        /* Hero section */
+        .hero {
+            padding: 6rem 0 4rem;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 64rem;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--muted-foreground);
+        }
+
+        .hero-text {
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            color: var(--muted-foreground);
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-top: 5rem;
+        }
+
+        /* Card styles */
+        .card {
+            background-color: hsla(0, 0%, 100%, 0.5);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-medium);
+            transform: translateY(-2px);
+        }
+
+        .card-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            background-color: hsla(217, 91%, 60%, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .card-description {
+            color: var(--muted-foreground);
+            text-align: center;
+        }
+
+        /* Section styles */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-description {
+            font-size: 1.25rem;
+            color: var(--muted-foreground);
+            text-align: center;
+            max-width: 48rem;
+            margin: 0 auto 4rem;
+        }
+
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: 1fr;
+        }
+
+        .grid-4 {
+            grid-template-columns: 1fr;
+        }
+
+        /* Emergency resource styles */
+        .emergency-card {
+            border-left: 4px solid var(--destructive);
+        }
+
+        .emergency-phone {
+            color: var(--destructive);
+            font-family: monospace;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer styles */
+        .footer {
+            background-color: var(--foreground);
+            color: var(--background);
+            padding: 4rem 0;
+        }
+
+        .footer-content {
+            max-width: 72rem;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand {
+            grid-column: span 2;
+        }
+
+        .footer-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .footer-description {
+            color: hsla(0, 0%, 100%, 0.8);
+            margin-bottom: 1.5rem;
+            max-width: 28rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: hsla(0, 0%, 100%, 0.8);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-links a:hover {
+            color: var(--background);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid hsla(0, 0%, 100%, 0.2);
+            padding-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-copyright {
+            color: hsla(0, 0%, 100%, 0.6);
+            font-size: 0.875rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-legal a {
+            color: hsla(0, 0%, 100%, 0.6);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-legal a:hover {
+            color: var(--background);
+        }
+
+        /* Icons (using simple CSS shapes) */
+        .icon {
+            width: 2rem;
+            height: 2rem;
+            background-color: var(--primary);
+            border-radius: 0.25rem;
+        }
+
+        .icon-heart::before {
+            content: "♥";
+            color: var(--primary);
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .icon-shield::before {
+            content: "🛡";
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .icon-users::before {
+            content: "👥";
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        /* Responsive design */
+        @media (min-width: 640px) {
+            .hero-actions {
+                flex-direction: row;
+            }
+            
+            .grid-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+            
+            .hero-title {
+                font-size: 6rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 3rem;
+            }
+            
+            .hero-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .grid-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .footer-bottom {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .grid-4 {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Floating elements */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background-color: hsla(217, 91%, 60%, 0.2);
+        }
+
+        .floating-1 {
+            top: 25%;
+            left: 10%;
+            width: 1rem;
+            height: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-2 {
+            top: 33%;
+            right: 16%;
+            width: 1.5rem;
+            height: 1.5rem;
+            animation: float 3s ease-in-out infinite 1s;
+        }
+
+        .floating-3 {
+            bottom: 25%;
+            left: 25%;
+            width: 0.75rem;
+            height: 0.75rem;
+            animation: float 3s ease-in-out infinite 2s;
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        /* Icons */
+        .icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .icon-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .rounded-3xl {
+            border-radius: 1.5rem;
+        }
+
+        .shadow-soft {
+            box-shadow: var(--shadow-soft);
+        }
+
+        .shadow-medium {
+            box-shadow: var(--shadow-medium);
+        }
+
+        .border {
+            border: 1px solid var(--border);
+        }
+
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+        .mb-16 { margin-bottom: 4rem; }
+        .mt-4 { margin-top: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .p-12 { padding: 3rem; }
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .font-semibold { font-weight: 600; }
+        .rounded-full { border-radius: 9999px; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .max-w-md { max-width: 28rem; }
+        .max-w-2xl { max-width: 42rem; }
+        .gap-4 { gap: 1rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="nav-left">
+                    <h1 class="logo bg-gradient-dose">DOSE</h1>
+                    <div class="nav-links">
+                        <a href="#about">About</a>
+                        <a href="#mission">Mission</a>
+                        <a href="#resources">Resources</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                </div>
+                <div class="nav-buttons">
+                    <a href="#" class="btn btn-outline hidden-mobile">Get Help</a>
+                    <a href="#" class="btn btn-primary">Support</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="animate-fade-in">
+                    <h1 class="hero-title bg-gradient-dose">DOSE</h1>
+                    <div class="mb-8">
+                        <div class="hero-logo bg-gradient-dose">DOSE</div>
+                        <h2 class="hero-subtitle">Drug Outreach & Support Education</h2>
+                    </div>
+                    <p class="hero-description">
+                        Led by high school students in Chicago, we're dedicated to treating drug misuse 
+                        in West Garfield through education, awareness, and connection to healing resources.
+                    </p>
+                </div>
+                
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary btn-lg">
+                        Get Support Now →
+                    </a>
+                    <a href="#" class="btn btn-outline btn-lg">
+                        Learn More
+                    </a>
+                </div>
+
+                <div class="hero-cards">
+                    <div class="card">
+                        <div class="card-icon">❤️</div>
+                        <h3 class="card-title">Compassionate Care</h3>
+                        <p class="card-text">
+                            We approach every individual with empathy and understanding, recognizing that healing begins with human connection.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">🛡️</div>
+                        <h3 class="card-title">Safe Environment</h3>
+                        <p class="card-text">
+                            Creating judgment-free spaces where individuals can seek help without fear, fostering trust and openness.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">👥</div>
+                        <h3 class="card-title">Community Driven</h3>
+                        <p class="card-text">
+                            Built by students for the community, ensuring our solutions are relevant, accessible, and culturally sensitive.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section bg-subtle">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="section-title">
+                    About <span class="bg-gradient-dose">DOSE</span>
+                </h2>
+                <p class="section-subtitle">
+                    We are a student-led initiative born from the passion and determination of Chicago high school students 
+                    who refuse to stand by while their community struggles with drug misuse.
+                </p>
+            </div>
+
+            <div class="grid grid-2 mb-16">
+                <div>
+                    <h3 class="text-3xl font-semibold mb-6">Our Story</h3>
+                    <p class="text-lg mb-6" style="color: rgba(0, 0, 0, 0.8);">
+                        Founded in Chicago's West Garfield area, DOSE emerged from the recognition that young voices 
+                        can drive meaningful change in addressing substance abuse. Our team of dedicated high school 
+                        students combines fresh perspectives with evidence-based approaches to create impactful solutions.
+                    </p>
+                    <p class="text-lg" style="color: rgba(0, 0, 0, 0.8);">
+                        We believe that education, compassion, and community connection are the most powerful tools 
+                        in combating drug misuse. Our pharmaceutical-inspired approach emphasizes precision, care, 
+                        and scientific understanding in everything we do.
+                    </p>
+                </div>
+                
+                <div class="grid grid-2 gap-6">
+                    <div class="card">
+                        <div class="card-icon">🎓</div>
+                        <h4 class="font-semibold mb-2">Student-Led</h4>
+                        <p class="text-sm" style="color: rgba(0, 0, 0, 0.7);">Driven by passionate high school students</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">📍</div>
+                        <h4 class="font-semibold mb-2">Local Focus</h4>
+                        <p class="text-sm" style="color: rgba(0, 0, 0, 0.7);">Targeting West Garfield, Chicago</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">🎯</div>
+                        <h4 class="font-semibold mb-2">Evidence-Based</h4>
+                        <p class="text-sm" style="color: rgba(0, 0, 0, 0.7);">Scientific approach to treatment</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon">💡</div>
+                        <h4 class="font-semibold mb-2">Innovation</h4>
+                        <p class="text-sm" style="color: rgba(0, 0, 0, 0.7);">Fresh perspectives on healing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section id="mission" class="section">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="section-title">
+                    Our <span class="bg-gradient-dose">Mission</span>
+                </h2>
+                <p class="section-subtitle">
+                    We're committed to creating a comprehensive support system that addresses drug misuse 
+                    through education, intervention, and connection to professional resources.
+                </p>
+            </div>
+
+            <div class="grid grid-4 mb-16">
+                <div class="card text-center">
+                    <div class="card-icon">📚</div>
+                    <h3 class="text-xl font-semibold mb-4">Education</h3>
+                    <p style="color: rgba(0, 0, 0, 0.7);">
+                        Providing accurate, science-based information about drug risks and safe practices
+                    </p>
+                </div>
+
+                <div class="card text-center">
+                    <div class="card-icon">⚠️</div>
+                    <h3 class="text-xl font-semibold mb-4">Awareness</h3>
+                    <p style="color: rgba(0, 0, 0, 0.7);">
+                        Raising community awareness about the dangers and signs of drug misuse
+                    </p>
+                </div>
+
+                <div class="card text-center">
+                    <div class="card-icon">📞</div>
+                    <h3 class="text-xl font-semibold mb-4">Connection</h3>
+                    <p style="color: rgba(0, 0, 0, 0.7);">
+                        Linking individuals to professional treatment and support services
+                    </p>
+                </div>
+
+                <div class="card text-center">
+                    <div class="card-icon">👨‍👩‍👧‍👦</div>
+                    <h3 class="text-xl font-semibold mb-4">Support</h3>
+                    <p style="color: rgba(0, 0, 0, 0.7);">
+                        Building a supportive community for recovery and healing
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-subtle rounded-3xl p-12 text-center shadow-soft">
+                <h3 class="text-3xl font-semibold mb-6">Ready to Make a Change?</h3>
+                <p class="text-xl mb-8 max-w-2xl" style="margin: 0 auto 2rem; color: rgba(0, 0, 0, 0.8);">
+                    Whether you're seeking help for yourself or someone you care about, 
+                    or you want to join our mission, we're here to support you.
+                </p>
+                <div class="flex gap-4" style="justify-content: center; flex-wrap: wrap;">
+                    <a href="#" class="btn btn-primary btn-lg">Get Immediate Help</a>
+                    <a href="#" class="btn btn-outline btn-lg">Join Our Team</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="section bg-subtle">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="section-title">
+                    <span class="bg-gradient-dose">Resources</span> & Support
+                </h2>
+                <p class="section-subtitle">
+                    Immediate help and ongoing support resources for individuals and families 
+                    affected by substance abuse.
+                </p>
+            </div>
+
+            <!-- Emergency Resources -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-semibold mb-8 text-center">
+                    <span class="text-destructive">Emergency</span> Resources
+                </h3>
+                <div class="grid grid-3">
+                    <div class="card border-destructive">
+                        <div class="flex" style="gap: 1rem;">
+                            <div style="background: rgba(239, 68, 68, 0.1); width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                📞
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 class="font-semibold mb-2">National Suicide Prevention Lifeline</h4>
+                                <p class="phone-number mb-2">988</p>
+                                <p class="text-sm mb-4" style="color: rgba(0, 0, 0, 0.7);">24/7 crisis support and suicide prevention</p>
+                                <a href="tel:988" class="btn bg-destructive" style="color: white;">Call Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-destructive">
+                        <div class="flex" style="gap: 1rem;">
+                            <div style="background: rgba(239, 68, 68, 0.1); width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                📞
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 class="font-semibold mb-2">SAMHSA National Helpline</h4>
+                                <p class="phone-number mb-2">1-800-662-4357</p>
+                                <p class="text-sm mb-4" style="color: rgba(0, 0, 0, 0.7);">Treatment referral and information service</p>
+                                <a href="tel:1-800-662-4357" class="btn bg-destructive" style="color: white;">Call Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-destructive">
+                        <div class="flex" style="gap: 1rem;">
+                            <div style="background: rgba(239, 68, 68, 0.1); width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                💬
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 class="font-semibold mb-2">Crisis Text Line</h4>
+                                <p class="phone-number mb-2">Text HOME to 741741</p>
+                                <p class="text-sm mb-4" style="color: rgba(0, 0, 0, 0.7);">24/7 crisis support via text message</p>
+                                <a href="sms:741741?body=HOME" class="btn bg-destructive" style="color: white;">Text Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Local Resources -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-semibold mb-8 text-center">Chicago Area Resources</h3>
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="flex" style="gap: 1rem;">
+                            <div style="background: rgba(0, 123, 255, 0.1); width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                🔗
+                            </div>
+                            <div style="flex: 1;">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h4 class="font-semibold">Chicago Recovery Alliance</h4>
+                                    <span class="px-2 py-1 rounded-full text-xs" style="background: rgba(0, 123, 255, 0.1); color: var(--primary);">
+                                        Local Support
+                                    </span>
+                                </div>
+                                <p class="mb-4" style="color: rgba(0, 0, 0, 0.7);">Harm reduction services and support in Chicago</p>
+                                <a href="#" class="btn btn-outline">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex" style="gap: 1rem;">
+                            <div style="background: rgba(0, 123, 255, 0.1); width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                🔗
+                            </div>
+                            <div style="flex: 1;">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h4 class="font-semibold">Haymarket Center</h4>
+                                    <span class="px-2 py-1 rounded-full text-xs" style="background: rgba(0, 123, 255, 0.1); color: var(--primary);">
+                                        Treatment
+                                    </span>
+                                </div>
+                                <p class="mb-4" style="color: rgba(0, 0, 0, 0.7);">Comprehensive addiction treatment services</p>
+                                <a href="#" class="btn btn-outline">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex" style="gap: 1rem;">
+                            <div style="background: rgba(0, 123, 255, 0.1); width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                🔗
+                            </div>
+                            <div style="flex: 1;">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h4 class="font-semibold">Gateway Foundation</h4>
+                                    <span class="px-2 py-1 rounded-full text-xs" style="background: rgba(0, 123, 255, 0.1); color: var(--primary);">
+                                        Treatment
+                                    </span>
+                                </div>
+                                <p class="mb-4" style="color: rgba(0, 0, 0, 0.7);">Evidence-based addiction treatment programs</p>
+                                <a href="#" class="btn btn-outline">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex" style="gap: 1rem;">
+                            <div style="background: rgba(0, 123, 255, 0.1); width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                🔗
+                            </div>
+                            <div style="flex: 1;">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h4 class="font-semibold">Chicago Department of Public Health</h4>
+                                    <span class="px-2 py-1 rounded-full text-xs" style="background: rgba(0, 123, 255, 0.1); color: var(--primary);">
+                                        Public Health
+                                    </span>
+                                </div>
+                                <p class="mb-4" style="color: rgba(0, 0, 0, 0.7);">Community health resources and programs</p>
+                                <a href="#" class="btn btn-outline">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact DOSE -->
+            <div class="card rounded-3xl p-12 text-center shadow-soft border">
+                <h3 class="text-3xl font-semibold mb-6">
+                    Connect with <span class="bg-gradient-dose">DOSE</span>
+                </h3>
+                <p class="text-xl mb-8 max-w-2xl" style="margin: 0 auto 2rem; color: rgba(0, 0, 0, 0.8);">
+                    Need personalized support or want to learn more about our programs? 
+                    Our team is here to help you navigate your journey to recovery.
+                </p>
+                <div class="flex gap-4" style="justify-content: center; flex-wrap: wrap;">
+                    <a href="#" class="btn btn-primary btn-lg">
+                        💬 Start a Conversation
+                    </a>
+                    <a href="#" class="btn btn-outline btn-lg">
+                        📅 Schedule Appointment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand -->
+                <div>
+                    <h3 class="footer-brand bg-gradient-dose">DOSE</h3>
+                    <p class="footer-text max-w-md">
+                        A student-led initiative dedicated to treating drug misuse in Chicago's 
+                        West Garfield area through education, awareness, and community connection.
+                    </p>
+                    <div class="flex items-center space-x-2" style="color: rgba(255, 255, 255, 0.6);">
+                        <span>❤️</span>
+                        <span class="text-sm">Made with care by Chicago students</span>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#mission">Our Mission</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="footer-section">
+                    <h4>Get Help</h4>
+                    <div class="space-y-3">
+                        <div class="footer-contact">
+                            <span>📞</span>
+                            <span style="color: rgba(255, 255, 255, 0.8);">Crisis: 988</span>
+                        </div>
+                        <div class="footer-contact">
+                            <span>✉️</span>
+                            <span style="color: rgba(255, 255, 255, 0.8);">info@dose.org</span>
+                        </div>
+                        <div class="footer-contact">
+                            <span>📍</span>
+                            <span style="color: rgba(255, 255, 255, 0.8);">West Garfield, Chicago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p style="color: rgba(255, 255, 255, 0.6); font-size: 0.875rem;">
+                    © 2024 DOSE. All rights reserved. Non-profit student organization.
+                </p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Disclaimer</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
